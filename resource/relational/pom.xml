@@ -32,11 +32,11 @@
     <module>ddl</module>
     <!--module>ddl.render</module-->
     <module>dml.render</module>
+    <module>diff</module>
     <!--module>liquibase.render</module-->
     <module>load.jdbc</module>
     <module>load.privilege</module>
     <module>sql.resolve</module>
-    <!--module>diff</module-->
     <!--
     <module>index.advise</module>
     -->
