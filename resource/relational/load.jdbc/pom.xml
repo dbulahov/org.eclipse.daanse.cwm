@@ -92,7 +92,7 @@
     </dependency>
 
     <!-- Test: generate DDL (ddl module), apply it, then load it back and
-         compare — against PostgreSQL and Oracle via Testcontainers. -->
+        compare — against PostgreSQL and Oracle via Testcontainers. -->
     <dependency>
       <groupId>org.eclipse.daanse</groupId>
       <artifactId>org.eclipse.daanse.cwm.resource.relational.ddl</artifactId>
