@@ -14,9 +14,7 @@
 package org.eclipse.daanse.cwm.resource.relational.ddl.internal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +59,6 @@ import org.eclipse.daanse.sql.model.schema.Trigger.TriggerEvent;
 import org.eclipse.daanse.sql.model.schema.Trigger.TriggerScope;
 import org.eclipse.daanse.sql.model.schema.Trigger.TriggerTiming;
 import org.eclipse.daanse.sql.dialect.api.Dialect;
-import org.eclipse.daanse.sql.dialect.api.generator.DdlGenerator.SynonymDefinition;
 
 /**
  * Serialises a CWM relational {@link Schema} to an ordered list of dialect-
@@ -124,9 +121,10 @@ public final class DdlGeneratorImpl implements DdlGenerator {
             return;
         }
         List<Synonym> ordered = new ArrayList<>(synonyms);
-        ordered.sort(Comparator.comparingInt(DdlGeneratorImpl::chainDepth));
+        ordered.sort(Comparator.comparingInt(CwmSchemaMapper::synonymChainDepth));
         for (Synonym synonym : ordered) {
-            Optional<String> sql = dialect.ddlGenerator().createSynonym(synonymDefinition(schema, synonym), false);
+            Optional<String> sql = dialect.ddlGenerator()
+                    .createSynonym(CwmSchemaMapper.synonymDefinition(synonym), false);
             if (sql.isPresent()) {
                 out.add(sql.get());
             } else {
@@ -134,30 +132,6 @@ public final class DdlGeneratorImpl implements DdlGenerator {
                         "this dialect cannot express its target");
             }
         }
-    }
-
-    private static SynonymDefinition synonymDefinition(Schema schema, Synonym synonym) {
-        String targetSchema = synonym.getTargetSchemaName();
-        String targetName = synonym.getTargetName();
-        ModelElement target = synonym.getTarget();
-        if (target != null && target.getName() != null && target.getNamespace() instanceof Schema owner) {
-            targetSchema = owner.getName();
-            targetName = target.getName();
-        }
-        return new SynonymDefinition(schema.getName(), synonym.getName(),
-                synonym.getTargetCatalogName(), targetSchema, targetName, synonym.getDbLink(), synonym.isIsPublic());
-    }
-
-    /** Number of synonym links before a non-synonym; a cycle counts as its length. */
-    private static int chainDepth(Synonym synonym) {
-        Set<Synonym> seen = Collections.newSetFromMap(new IdentityHashMap<>());
-        int depth = 0;
-        ModelElement current = synonym.getTarget();
-        while (current instanceof Synonym next && seen.add(next)) {
-            depth++;
-            current = next.getTarget();
-        }
-        return depth;
     }
 
     public DdlSettings settings() {
