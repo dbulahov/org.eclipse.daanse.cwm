@@ -21,7 +21,7 @@
   <packaging>pom</packaging>
 
   <!-- EMF-Laufzeit und die Fennec-Annotationen, die der Codegen in die generierten
-       Klassen schreibt: fuer jedes Modell-Modul gleich, cwm wie cwmx. -->
+      Klassen schreibt: fuer jedes Modell-Modul gleich, cwm wie cwmx. -->
   <dependencies>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
@@ -41,13 +41,13 @@
     <dependency>
       <groupId>org.eclipse.fennec.emf</groupId>
       <artifactId>org.eclipse.fennec.emf.osgi.api</artifactId>
-      <version>0.1.1</version>
+      <version>1.0.2</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.fennec.emf</groupId>
       <artifactId>org.eclipse.fennec.emf.osgi.component</artifactId>
-      <version>0.1.1</version>
+      <version>1.0.2</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
